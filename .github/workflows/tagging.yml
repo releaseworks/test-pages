@@ -39,6 +39,7 @@ jobs:
 
   apply-tag:
     name: Apply tag ${{ needs.calculate-tag.outputs.tag }}
+    id: apply-tag
     runs-on: ubuntu-22.04
     needs: calculate-tag
     environment: tagging
