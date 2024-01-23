@@ -1,0 +1,51 @@
+name: Tagging
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Semver version without the prefixing 'v'
+        required: false
+        default: null
+        type: string
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: prod
+  cancel-in-progress: false
+
+jobs:
+  calculate-tag:
+    runs-on: ubuntu-22.04
+    outputs:
+      tag: ${{ steps.get-tag.outputs.new_tag }}
+    steps:
+      - name: Calculate GitHub Tag
+        id: get-tag
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ inputs.tag }}
+          create_annotated_tag: true
+          tag_prefix: v
+          dry_run: true
+
+  apply-tag:
+    runs-on: ubuntu-22.04
+    needs: calculate-tag
+    environment: tagging
+    steps:
+      - name: Apply Tag
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ needs.calculate-tag.outputs.tag }}
+          create_annotated_tag: true
+          tag_prefix: v
+          dry_run: true
