@@ -22,6 +22,7 @@ concurrency:
 
 jobs:
   calculate-tag:
+    name: Calculate tag
     runs-on: ubuntu-22.04
     outputs:
       tag: ${{ steps.get-tag.outputs.new_tag }}
@@ -37,6 +38,7 @@ jobs:
           dry_run: true
 
   apply-tag:
+    name: Apply tag ${{ needs.calculate-tag.outputs.tag }}
     runs-on: ubuntu-22.04
     needs: calculate-tag
     environment: tagging
