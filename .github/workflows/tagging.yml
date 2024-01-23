@@ -53,7 +53,7 @@ jobs:
 
       - name: Get review comments
         id: review
-        uses: ambilykk/deployment-review-comment@1.0.0
+        uses: ambilykk/deployment-review-comment@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
