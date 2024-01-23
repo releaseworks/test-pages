@@ -39,7 +39,7 @@ jobs:
 
   calculate-tag:
     name: Calculate tag
-    uses: .github/workflows/tag-tool.yml
+    uses: .github/workflows/tag-tool.yml@main
     with:
       tag-prefix: v
       dry-run: true
