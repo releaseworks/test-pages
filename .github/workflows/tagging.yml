@@ -78,7 +78,6 @@ jobs:
     steps:
       - name: Set tag to outputs
         id: set-tag
-        uses: actions/github-script@v6
         run: |
           echo ${{ steps.review.outputs.comments }}
           echo ${{ steps.review.outputs.comments[0].comment }}
