@@ -21,25 +21,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # calculate-tag:
+  #   name: Calculate tag
+  #   runs-on: ubuntu-22.04
+  #   outputs:
+  #     tag: ${{ steps.get-tag.outputs.new_tag }}
+  #   steps:
+  #     - name: Calculate GitHub Tag
+  #       id: get-tag
+  #       uses: mathieudutour/github-tag-action@v6.1
+  #       with:
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  #         custom_tag: ${{ inputs.tag }}
+  #         create_annotated_tag: true
+  #         tag_prefix: v
+  #         dry_run: true
+
   calculate-tag:
     name: Calculate tag
-    runs-on: ubuntu-22.04
-    outputs:
-      tag: ${{ steps.get-tag.outputs.new_tag }}
-    steps:
-      - name: Calculate GitHub Tag
-        id: get-tag
-        uses: mathieudutour/github-tag-action@v6.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          custom_tag: ${{ inputs.tag }}
-          create_annotated_tag: true
-          tag_prefix: v
-          dry_run: true
+    uses: ./tag-tool.yml
+    with:
+      tag-prefix: v
+      dry-run: true
 
   apply-tag:
     name: Apply tag ${{ needs.calculate-tag.outputs.tag }}
-    id: apply-tag
     runs-on: ubuntu-22.04
     needs: calculate-tag
     environment: tagging

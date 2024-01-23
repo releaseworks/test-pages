@@ -1,0 +1,40 @@
+name: Tag tool
+
+on:
+  workflow_call:
+    inputs:
+      dry-run:
+        description: Whether to just dry-run the workflow.
+        required: false
+        default: false
+        type: boolean
+      custom-tag:
+        description: Custom tag to be applied to the commit.
+        required: false
+        default: null
+        type: string
+      tag-prefix:
+        description: Prefix for the tag. Has no effect if 'custom-tag' is provided.
+        required: false
+        default: 'v'
+        type: string
+    outputs:
+      tag: ${{ jobs.apply-tag.outputs.tag }}
+      outcome: ${{ jobs.apply-tag.result }}
+
+jobs:
+  apply-tag:
+    name: Apply tag ${{ inputs.custom-tag }}
+    runs-on: ubuntu-22.04
+    outputs:
+      tag: ${{ steps.set-tag.outputs.new_tag }}
+    steps:
+      - name: Apply Tag
+        id: set-tag
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ inputs.custom-tag }}
+          create_annotated_tag: true
+          tag_prefix: ${{ inputs.custom-tag == null && inputs.tag-prefix || inputs.tag-prefix }}
+          dry-run: ${{ inputs.dry-run }}
