@@ -72,7 +72,7 @@ jobs:
     name: Set custom tag
     runs-on: ubuntu-22.04
     needs: apply-tag
-    if: steps.apply-tag.outcome != 'success'
+    if: jobs.apply-tag.result != 'success'
     outputs:
       tag: ${{ steps.set-tag.outputs.tag }}
     steps:
@@ -87,7 +87,7 @@ jobs:
     name: Apply custom tag ${{ needs.set-tag-custom.outputs.tag }}
     runs-on: ubuntu-22.04
     needs: set-tag-custom
-    if: steps.apply-tag.outcome != 'success'
+    if: jobs.apply-tag.result != 'success'
     continue-on-error: true
     environment: tagging
     steps:
