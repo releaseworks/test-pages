@@ -42,8 +42,11 @@ jobs:
     runs-on: ubuntu-22.04
     needs: calculate-tag
     environment: tagging
+    outputs:
+      tag: ${{ steps.set-tag.outputs.new_tag }}
     steps:
       - name: Apply Tag
+        id: set-tag
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -65,3 +68,36 @@ jobs:
               console.log(data)
             }
 
+  set-tag-custom:
+    name: Set custom tag
+    runs-on: ubuntu-22.04
+    needs: apply-tag
+    if: ${{ steps.create-repo.outcome != 'success' }}
+    outputs:
+      tag: ${{ steps.set-tag.outputs.tag }}
+    steps:
+      - name: Set tag to outputs
+        id: set-tag
+        uses: actions/github-script@v6
+        run: |
+          echo ${{ steps.review.outputs.comments }}
+          echo ${{ steps.review.outputs.comments[0].comment }}
+          echo "tag=test" >> "$GITHUB_OUTPUT"
+
+  apply-tag-custom:
+    name: Apply custom tag ${{ needs.set-tag-custom.outputs.tag }}
+    runs-on: ubuntu-22.04
+    needs: apply-tag
+    if: ${{ steps.create-repo.outcome != 'success' }}
+    continue-on-error: true
+    environment: tagging
+    steps:
+      - name: Apply Tag
+        id: set-tag
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ needs.set-tag-custom.outputs.tag }}
+          create_annotated_tag: true
+          tag_prefix: ''
+          dry_run: true
