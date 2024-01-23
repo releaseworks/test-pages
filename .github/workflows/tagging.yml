@@ -49,3 +49,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ needs.calculate-tag.outputs.tag }}
           create_annotated_tag: true
+          tag_prefix: ''
