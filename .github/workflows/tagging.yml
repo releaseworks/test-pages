@@ -50,3 +50,18 @@ jobs:
           custom_tag: ${{ needs.calculate-tag.outputs.tag }}
           create_annotated_tag: true
           tag_prefix: ''
+
+      - name: Get review comments
+        id: review
+        uses: ambilykk/deployment-review-comment@1.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Display review comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            for(const data of ${{ steps.review.outputs.comments }}){
+              console.log(data)
+            }
+
