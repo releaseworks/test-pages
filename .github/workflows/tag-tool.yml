@@ -33,7 +33,7 @@ on:
 
 jobs:
   apply-tag:
-    name: Apply tag ${{ inputs.custom-tag }}
+    name: ${{ inputs.custom-tag == null && 'GET' || inputs.custom-tag }}
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
     outputs:
