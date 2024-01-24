@@ -37,3 +37,9 @@ jobs:
     with:
       environment: tagging
       custom-tag: ${{ inputs.tag == null && needs.calculate-tag.outputs.tag || inputs.tag }}
+
+  changelog:
+    name: Show changelog
+    needs: apply-tag
+    run: |
+      echo ${{ needs.apply-tag.outputs.changelog }}
