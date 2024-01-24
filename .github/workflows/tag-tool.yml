@@ -1,4 +1,4 @@
-name:
+name: '[TEMPLATE] tag tool'
 
 on:
   workflow_call:
