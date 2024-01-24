@@ -3,8 +3,13 @@ name: Tag tool
 on:
   workflow_call:
     inputs:
+      continue-on-error:
+        description: Whether to continue on job failure.
+        required: false
+        default: false
+        type: boolean
       environment:
-        description: Target deployment environment
+        description: Target deployment environment.
         required: false
         default: null
         type: string
@@ -36,6 +41,7 @@ jobs:
     name: ${{ inputs.custom-tag == null && 'GET' || inputs.custom-tag }}
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
+    continue-on-error: ${{ inputs.continue-on-error }}
     outputs:
       tag: ${{ steps.set-tag.outputs.new_tag }}
     steps:
