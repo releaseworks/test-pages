@@ -47,7 +47,8 @@ jobs:
 
   apply-tag:
     name: Apply tag
-    needs: ${{ github.event_name == 'workflow_dispatch' && inputs.tag == null && 'calculate-tag' || null }}
+    needs: calculate-tag
+    if: always()
     uses: ./.github/workflows/tag-tool.yml
     with:
       continue-on-error: true
