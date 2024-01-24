@@ -46,3 +46,4 @@ jobs:
       - name: Print changelog
         run: |
           echo ${{ needs.apply-tag.outputs.changelog }}
+          echo ${{ needs.apply-tag.outputs.structured }}
