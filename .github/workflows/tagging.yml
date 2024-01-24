@@ -24,7 +24,7 @@ jobs:
   calculate-tag:
     name: Calculate tag
     if: inputs.tag == null
-    uses: ./.github/tag-tool.yml
+    uses: ./.github/workflows/templates/tag-tool.yml
     with:
       tag-prefix: v
       dry-run: true
@@ -33,7 +33,7 @@ jobs:
     name: Apply tag
     needs: calculate-tag
     if: always()
-    uses: ./.github/tag-tool.yml
+    uses: ./.github/workflows/templates/tag-tool.yml
     with:
       environment: tagging
       custom-tag: ${{ inputs.tag == null && needs.calculate-tag.outputs.tag || inputs.tag }}
