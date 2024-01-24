@@ -35,6 +35,5 @@ jobs:
     if: always()
     uses: ./.github/tag-tool.yml
     with:
-      continue-on-error: true
       environment: tagging
       custom-tag: ${{ inputs.tag == null && needs.calculate-tag.outputs.tag || inputs.tag }}
