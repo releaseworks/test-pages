@@ -53,4 +53,4 @@ jobs:
           custom_tag: ${{ inputs.custom-tag }}
           create_annotated_tag: true
           tag_prefix: ${{ inputs.custom-tag == null && inputs.tag-prefix || '' }}
-          dry-run: ${{ inputs.dry-run }}
+          dry_run: ${{ inputs.dry-run }}

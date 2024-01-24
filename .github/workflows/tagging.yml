@@ -87,7 +87,9 @@ jobs:
   set-tag-custom:
     name: Set custom tag
     runs-on: ubuntu-22.04
-    needs: apply-tag
+    needs:
+      - calculate-tag
+      - apply-tag
     if: needs.apply-tag.outputs.outcome != 'success'
     outputs:
       tag: ${{ steps.set-tag.outputs.tag }}
