@@ -41,5 +41,7 @@ jobs:
   changelog:
     name: Show changelog
     needs: apply-tag
-    run: |
-      echo ${{ needs.apply-tag.outputs.changelog }}
+    steps:
+      - name: Print changelog
+        run: |
+          echo ${{ needs.apply-tag.outputs.changelog }}
