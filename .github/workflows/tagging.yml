@@ -6,8 +6,8 @@ on:
       - main
   workflow_dispatch:
     inputs:
-      version:
-        description: Semver version without the prefixing 'v'
+      tag:
+        description: Custom tag to be applied
         required: false
         default: null
         type: string
@@ -39,6 +39,7 @@ jobs:
 
   calculate-tag:
     name: Calculate tag
+    if: inputs.tag == null
     uses: ./.github/workflows/tag-tool.yml
     with:
       tag-prefix: v
