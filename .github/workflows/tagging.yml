@@ -45,7 +45,7 @@ jobs:
       dry-run: true
 
   apply-tag:
-    name: Apply tag ${{ needs.calculate-tag.outputs.tag }}
+    name: Apply tag
     needs: calculate-tag
     uses: ./.github/workflows/tag-tool.yml
     with:
