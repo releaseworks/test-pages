@@ -47,12 +47,12 @@ jobs:
 
   apply-tag:
     name: Apply tag
-    needs: calculate-tag
+    needs: ${{ inputs.tag == null && 'calculate-tag' || null }}
     uses: ./.github/workflows/tag-tool.yml
     with:
       continue-on-error: true
       environment: tagging
-      custom-tag: ${{ needs.calculate-tag.outputs.tag }}
+      custom-tag: ${{ inputs.tag == null && needs.calculate-tag.outputs.tag || inputs.tag }}
 
   # apply-tag:
   #   name: Apply tag ${{ needs.calculate-tag.outputs.tag }}
