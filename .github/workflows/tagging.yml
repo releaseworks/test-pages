@@ -53,7 +53,7 @@ jobs:
     with:
       continue-on-error: true
       environment: tagging
-      custom-tag: ${{ github.event_name == 'workflow_dispatch' && inputs.tag == null && needs.calculate-tag.outputs.tag || inputs.tag }}
+      custom-tag: ${{ inputs.tag == null && needs.calculate-tag.outputs.tag || inputs.tag }}
 
   # apply-tag:
   #   name: Apply tag ${{ needs.calculate-tag.outputs.tag }}
