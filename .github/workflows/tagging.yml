@@ -48,6 +48,7 @@ jobs:
     name: Apply tag ${{ needs.calculate-tag.outputs.tag }}
     needs: calculate-tag
     environment: tagging
+    uses: ./.github/workflows/tag-tool.yml
     with:
       custom-tag: ${{ needs.calculate-tag.outputs.tag }}
 
