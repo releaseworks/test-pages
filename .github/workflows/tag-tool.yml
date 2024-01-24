@@ -3,6 +3,11 @@ name: Tag tool
 on:
   workflow_call:
     inputs:
+      environment:
+        description: Target deployment environment
+        required: false
+        default: null
+        type: string
       dry-run:
         description: Whether to just dry-run the workflow.
         required: false
@@ -30,6 +35,7 @@ jobs:
   apply-tag:
     name: Apply tag ${{ inputs.custom-tag }}
     runs-on: ubuntu-22.04
+    environment: ${{ inputs.environment }}
     outputs:
       tag: ${{ steps.set-tag.outputs.new_tag }}
     steps:
