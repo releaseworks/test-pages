@@ -40,6 +40,7 @@ jobs:
 
   changelog:
     name: Show changelog
+    runs-on: ubuntu-22.04
     needs: apply-tag
     steps:
       - name: Print changelog
