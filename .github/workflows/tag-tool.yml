@@ -1,3 +1,5 @@
+# Edit this file to add more inputs, outputs or functionality.
+# The initial state is just a simple starting point.
 name: '[TEMPLATE] tag tool'
 
 on:
@@ -41,7 +43,7 @@ on:
 
 jobs:
   apply-tag:
-    name: ${{ inputs.custom-tag == null && 'GET' || inputs.custom-tag }}
+    name: ${{ inputs.custom-tag == null && '[calculated]' || inputs.custom-tag }}
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
     continue-on-error: ${{ inputs.continue-on-error }}
