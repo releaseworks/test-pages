@@ -61,8 +61,5 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      - name: Load Docker image
-        run: docker load -i docker-image
-
       - name: Push Docker image to Azure Container Registry
         run: docker push ${{ secrets.ACR_REGISTRY }}/${{ secrets.ACR_REPOSITORY }}:${{ github.sha }}
