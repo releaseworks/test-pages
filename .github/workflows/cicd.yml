@@ -21,7 +21,9 @@ jobs:
         # docker-compose -f docker-compose.ci.yml run --rm app python manage.py test
 
     - name: Run static security analysis
-      uses: ghcr.io/pycqa/bandit/bandit
+      run: |
+        docker pull ghcr.io/pycqa/bandit/bandit
+        docker run ghcr.io/pycqa/bandit/bandit
 
     # - name: Run Pysa Action
     #   uses: facebook/pysa-action
