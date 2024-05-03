@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>HEOR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="cliffImage"></div>
+    <div class="container">
+        <div class="logo-container">
+            <a href="https://heor.co.uk">
+                <img src="https://heor.co.uk/wp-content/uploads/2022/07/heor-site-logo.svg" alt="HEOR" class="logo">
+            </a>
+        </div>
+        
+	    <form id="model-generation-form">
+            <div>
+                <label for="brandingDesign">Branding and design:</label>
+                <select id="brandingDesign" name="brandingDesign">
+                    <option value="HEOR Default Branding">HEOR Default Branding</option>
+                    <option value="Client branding">Client branding</option>
+                </select>
+            </div>
+            <div>
+                <label for="modelType">Model Type:</label>
+                <select id="modelType" name="modelType">
+                    <option value="Markov Model" selected>Markov Model</option>
+                    <option value="PSM">PSM</option>
+                    <option value="DTM/TSV">DTM/ TSV</option>
+                    <option value="Simulation">Simulation</option>
+                    <option value="COM">COM</option>
+                    <option value="BIM">BIM</option>
+                    <option value="Portfolio models">Portfolio models</option>
+                    <option value="Disease reference models">Disease reference models</option>
+                </select>
+            </div>
+            <hr />
+            <div>
+                <label for="healthStates">Number of health states:</label>
+                <select id="healthStates" name="healthStates">
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="interventionArms">Intervention arms:</label>
+                <select id="interventionArms" name="interventionArms">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+            
+            <div>
+                <label for="comparatorArms">Comparator arms:</label>
+                <select id="comparatorArms" name="comparatorArms">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+    
+            <div>
+                <label for="includeSocietalCosts">Include Societal costs:</label>
+                <select id="includeSocietalCosts" name="includeSocietalCosts">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <hr />
+            <div>
+                <label for="additionalFeatures">Additional features:</label>
+                <select id="additionalFeatures" name="additionalFeatures">
+                    <option value="core">Core</option>
+                    <option value="treatment_discontinuation">Treatment discontinuation</option>
+                    <option value="time_dependant_transition_probabilities">Time dependant transition probabilities</option>
+                    <option value="relative_treatment_effects">Relative treatment effects</option>
+                    <option value="automated_scenario_analysis">Automated Scenario Analysis</option>
+                    <option value="risk_factors_and_equations">Risk Factors and equations</option>
+                </select>
+            </div>
+            
+            <div>
+                <label for="publicationType">Publication:</label>
+                <select id="publicationType" name="publicationType">
+                    <option value="Excel" selected>Excel</option>
+                    <option value="Shiny">Shiny</option>
+                    <option value="PWA HTML artefact">PWA HTML artefact</option>
+                    <option value="PowerPoint">PowerPoint</option>
+                    <option value="PDF">PDF</option>
+                </select>
+            </div>
+
+            <input type="submit" value="Create new model">
+        </form>
+        <a id="download-link" style="display: none;"></a>
+    </div>
+
+    <script>
+        document.getElementById('model-generation-form').onsubmit = async function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(this); // 'this' refers to the form element
+
+            try {
+                const response = await fetch('/download', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error('Internal server error.');
+                }
+
+                const blob = await response.blob();
+                const contentDisposition = response.headers.get('Content-Disposition');
+                let fileName = 'downloaded-file'; // Default file name
+                if (contentDisposition) {
+                    const match = contentDisposition.match(/filename\*?=['"]?(?:UTF-8'')?([^"';]+)/i);
+                    if (match && match[1]) {
+                        fileName = decodeURIComponent(match[1]);
+                    }
+                }
+
+                const url = window.URL.createObjectURL(blob);
+                const a = document.getElementById('download-link');
+                a.href = url;
+                a.download = fileName; // Use the server-specified file name
+                a.click();
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Error downloading file:', error);
+                alert(`Error downloading file: ${error.message}`);
+            }
+        };
+    </script>
+</body>
+</html>
