@@ -131,3 +131,6 @@ dist
 
 # Swagger dist
 !swagger/dist
+
+# Python venv
+venv/

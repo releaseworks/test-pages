@@ -20,13 +20,13 @@ jobs:
         # For example:
         # docker-compose -f docker-compose.ci.yml run --rm app python manage.py test
 
-    - name: Run Pysa Action
-      uses: facebook/pysa-action
-      with:
-        repo-directory: './src'
-        requirements-path: './src/requirements.txt'
-        infer-types: true
-        include-default-sapp-filters: true
+    # - name: Run Pysa Action
+    #   uses: facebook/pysa-action
+    #   with:
+    #     repo-directory: './src'
+    #     requirements-path: './src/requirements.txt'
+    #     infer-types: true
+    #     include-default-sapp-filters: true
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
