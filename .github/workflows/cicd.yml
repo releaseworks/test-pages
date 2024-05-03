@@ -23,7 +23,7 @@ jobs:
     - name: Run static security analysis
       run: |
         docker pull ghcr.io/pycqa/bandit/bandit
-        docker run ghcr.io/pycqa/bandit/bandit
+        docker run ghcr.io/pycqa/bandit/bandit -r .
 
     # - name: Run Pysa Action
     #   uses: facebook/pysa-action
